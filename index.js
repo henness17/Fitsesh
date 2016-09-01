@@ -10,7 +10,8 @@ app.use(express.static(__dirname + '/public'));
 passport.use(new Strategy({
     clientID: '1032451400184652',
     clientSecret: '6640678d88db3c3b0d7815f22c4896f2',
-    callbackURL: 'https://fitsesh.herokuapp.com/login/facebook/return'
+    //callbackURL: 'https://fitsesh.herokuapp.com/login/facebook/return'
+    callbackURL: 'http://localhost:3000/login/facebook/return'
   },
   function(accessToken, refreshToken, profile, cb) {
     // In this example, the user's Facebook profile is supplied as the user
@@ -55,6 +56,17 @@ app.get('/login/facebook',
   passport.authenticate('facebook'));
 
 app.get('/login/facebook/return', 
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect('/');
+  });
+
+app.get('/logout/facebook', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
+
+app.get('/logout/facebook/return', 
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');
