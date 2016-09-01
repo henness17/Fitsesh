@@ -1,3 +1,9 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+
+<body>
+<div class="w3-container w3-center w3-animate-zoom">
+  <img src="imgs/Untitled.png" alt="Logo" style="width:25%">
 <% if (!user) { %>
 	<p>Hi, we don't know who you are!<br/> Please <a href="/login">log in</a>.</p>
 	<p>By the way, we've deployed to Heroku from GitHub. :D
@@ -5,4 +11,6 @@
 	<p>Hello, <%= user.displayName %></p>
 	<a href="/logout/facebook">Log out</a>
 <% } %>
+<div>
+</body>
 
