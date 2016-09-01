@@ -1,3 +1,4 @@
+117 113 75
 var express = require('express');
 var app = express();
 var passport = require('passport');
@@ -59,49 +60,6 @@ app.get('/login/facebook/return',
   function(req, res) {
     res.redirect('/');
   });
-
-app.get('/profile',
-  require('connect-ensure-login').ensureLoggedIn(),
-  function(req, res){
-    req.user.username = "Henny";
-    req.user.exp = 550;
-    req.user.level = Math.round(req.user.exp / 100);
-    req.user.points = 4905;
-    if(req.user.level > 5){
-      req.user.badges = [];
-      req.user.badges.push("Not Such A Noob - You surpassed level 5.");
-    }
-    if(req.user.username == "Henny"){
-      req.user.badges.push("You Are Henny - Your username is Henny.");
-    }
-    res.render('profile', { user: req.user });
-  });
-
-app.get('/buildings',
-  require('connect-ensure-login').ensureLoggedIn(),
-  function(req, res){
-    req.user.buildings = ["5000 N Willamette Blvd, Portland, OR 97203", "Yale House", "McDonalds Around The Corner"];
-    res.render('buildings', { user: req.user });
-  });
-
-app.get('/building',
-  require('connect-ensure-login').ensureLoggedIn(),
-  function(req, res){
-    req.user.building = "Shiley Hall";
-    req.user.users = 12;
-    req.user.currentHealth = req.user.users * 100;
-    req.user.maxHealth = req.user.users * 100;
-    req.user.topUsers = ["DenyElectricity", "Henny", "OldBob"];
-    res.render('building', { user: req.user });
-  });
-
-app.get('/leaderboard',
-  require('connect-ensure-login').ensureLoggedIn(),
-  function(req, res){
-    req.user.topUsers = ["RJ3000", "DenyElectricity", "Tyrone", "Henny", "AntiLight", "OldBob", "xSamuel", "JakeTheSnake", "ShileyWarrior", "JunkCaptain"];
-    res.render('leaderboard', { user: req.user });
-  });
-
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
