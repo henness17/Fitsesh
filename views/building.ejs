@@ -1,0 +1,21 @@
+<p>
+	<h1><%= user.building %><br/></h1>
+	<img src="http://djcoregon.com/files/2010/05/university-of-portland-shiley-hall-turner-construction.jpg" width="300px"/><br/>
+	Users: <%= user.users %><br/>
+	Energy Monster Health: <%= user.currentHealth %> / <%= user.maxHealth %><br/>
+	<button type="button">Turned off unused lights.</button><br/>
+	<button type="button">Checked all unused lights, they're off.</button>
+	<br/><br/>
+	Top users:<br/>
+		<% for(i = 0; i < user.topUsers.length; i++){ %>
+			<%= i + 1%>. <%= user.topUsers[i] %><br/>
+		<% } %>
+</p>
+<p>
+	View <br/>
+		<a href="/buildings">Home</a><br/>
+		<a href="/buildings">Buildings</a><br/>
+		<a href="/profile">Profile</a>
+		<a href="/leaderboard"><br/>
+		Leaderboard</a>
+</p>

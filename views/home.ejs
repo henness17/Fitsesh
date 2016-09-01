@@ -1,0 +1,7 @@
+<% if (!user) { %>
+	<p>Hi, we don't know who you are!<br/> Please <a href="/login">log in</a>.</p>
+	<p>By the way, we've deployed to Heroku from GitHub. :)
+<% } else { %>
+	<p>Hello, <%= user.displayName %></p>
+<% } %>
+
