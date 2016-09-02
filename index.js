@@ -3,15 +3,24 @@ var app = express();
 var passport = require('passport');
 var Strategy = require('passport-facebook').Strategy;
 
+var pg = require('pg'),
+  bodyParser = require('body-parser'),
+  path = require('path');
+
+var connect = "postgres://ryan:password@localhost/somedb"
+
 app.set('port', (process.env.PORT || 3000));
 
 app.use(express.static(__dirname + '/public'));
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false}));
+
 passport.use(new Strategy({
     clientID: '1032451400184652',
     clientSecret: '6640678d88db3c3b0d7815f22c4896f2',
-    callbackURL: 'https://fitsesh.herokuapp.com/login/facebook/return'
-    //callbackURL: 'http://localhost:3000/login/facebook/return'
+    //callbackURL: 'https://fitsesh.herokuapp.com/login/facebook/return'
+    callbackURL: 'http://localhost:3000/login/facebook/return'
   },
   function(accessToken, refreshToken, profile, cb) {
     // In this example, the user's Facebook profile is supplied as the user
@@ -44,7 +53,22 @@ app.use(passport.session());
 // Define routes.
 app.get('/',
   function(req, res) {
-    res.render('home', { user: req.user });
+    pg.connect(connect, function(err, client, done){
+      if(err){
+        return console.error('error fetching', err);
+      }
+      client.query('SELECT * FROM users', function(err, result){
+        if(err){
+          return console.error('error fetching', err);  
+        }
+        res.render('home', {
+          users: result.rows,
+          user: req.user
+        });
+        console.log(result.rows);
+        done();
+      });
+    });
   });
 
 app.get('/login',
@@ -71,6 +95,28 @@ app.get('/logout/facebook/return',
   function(req, res) {
     res.redirect('/');
   });
+
+app.post('/addUser', function(req, res){
+  pg.connect(connect, function(err, client, done){
+    if(err){
+      return console.error('error fetching', err);
+    }
+    client.query("INSERT INTO users(username) VALUES($1)", [req.body.username]);
+    done();
+    res.redirect('/');
+  });
+});
+
+app.post('/deleteUser', function(req, res){
+  pg.connect(connect, function(err, client, done){
+    if(err){
+      return console.error('error fetching', err);
+    }
+    client.query("DELETE FROM users WHERE username=$1", [req.body.username]);
+    done();
+    res.redirect('/');
+  });
+});
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));

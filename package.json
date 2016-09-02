@@ -19,7 +19,8 @@
     "passport": "0.3.2",
     "passport-facebook": "2.1.1",
     "http": "0.0.0",
-    "connect-ensure-login": "0.1.1"
+    "connect-ensure-login": "0.1.1",
+    "pg": "*"
   },
   "keywords": [
     "node",
