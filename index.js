@@ -10,7 +10,7 @@ if(local){
 	cnct = 'postgres://ryan:password@localhost/somedb'
 }else{
 	cbURL = 'https://fitsesh.herokuapp.com/login/facebook/return';
-	cnct = 'postgres://iopymwpptebiud:YWHmmGfhmYDY3DKAoIuhu2C85M@ec2-23-21-58-144.compute-1.amazonaws.com:5432/d9cca2ob0r8h5v';
+	cnct = (process.env.DATABASE_URL || 'postgres://iopymwpptebiud:YWHmmGfhmYDY3DKAoIuhu2C85M@ec2-23-21-58-144.compute-1.amazonaws.com:5432/d9cca2ob0r8h5v');
 }
 
 var pg = require('pg'),
