@@ -7,7 +7,10 @@ var pg = require('pg'),
   bodyParser = require('body-parser'),
   path = require('path');
 
-var connect = "postgres://ryan:password@localhost/somedb"
+pg.defaults.ssl = true;
+
+//var connect = "postgres://ryan:password@localhost/somedb"
+var connect = "postgres://iopymwpptebiud:YWHmmGfhmYDY3DKAoIuhu2C85M@ec2-23-21-58-144.compute-1.amazonaws.com:5432/d9cca2ob0r8h5v";
 
 app.set('port', (process.env.PORT || 3000));
 
@@ -50,25 +53,20 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 // Define routes.
 app.get('/',
   function(req, res) {
-    pg.connect(connect, function(err, client, done){
-      if(err){
-        return console.error('error fetching', err);
-      }
-      client.query('SELECT * FROM users', function(err, result){
-        if(err){
-          return console.error('error fetching', err);  
-        }
-        res.render('home', {
-          users: result.rows,
-          user: req.user
-        });
-        console.log(result.rows);
-        done();
-      });
-    });
+	pg.connect(process.env.DATABASE_URL, function(err, client) {
+	  if (err) throw err;
+	  console.log('Connected to postgres! Getting schemas...');
+
+	  client
+	    .query('SELECT table_schema,table_name FROM information_schema.tables;')
+	    .on('row', function(row) {
+	      console.log(JSON.stringify(row));
+	    });
+	});
   });
 
 app.get('/login',
