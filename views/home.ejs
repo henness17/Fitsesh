@@ -15,17 +15,6 @@
   		Add a user:<br>
   		<input type="text" name="username"><br>
 	</form>
-
-Users in the DB:
-
-	<% for(var i=0; i<users.length; i++) {%>
-   		<br><%= users[i].username %>
-	<% } %>
-<br><br>
-<form method="post" action="/deleteUser">
-  	Remove a user:<br>
-  	<input type="text" name="username"><br>
-</form>
 <% } %>
 
 </div>
