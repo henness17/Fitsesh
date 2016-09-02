@@ -3,6 +3,16 @@ var app = express();
 var passport = require('passport');
 var Strategy = require('passport-facebook').Strategy;
 
+var local = false;
+
+if(local){
+	cbURL = 'http://localhost:3000/login/facebook/return';
+	cnct = 'postgres://ryan:password@localhost/somedb'
+}else{
+	cbURL = 'https://fitsesh.herokuapp.com/login/facebook/return';
+	cnct = 'postgres://iopymwpptebiud:YWHmmGfhmYDY3DKAoIuhu2C85M@ec2-23-21-58-144.compute-1.amazonaws.com:5432/d9cca2ob0r8h5v';
+}
+
 var pg = require('pg'),
   bodyParser = require('body-parser'),
   path = require('path');
@@ -10,7 +20,7 @@ var pg = require('pg'),
 pg.defaults.ssl = true;
 
 //var connect = "postgres://ryan:password@localhost/somedb"
-var connect = "postgres://iopymwpptebiud:YWHmmGfhmYDY3DKAoIuhu2C85M@ec2-23-21-58-144.compute-1.amazonaws.com:5432/d9cca2ob0r8h5v";
+var connect = cnct;
 
 app.set('port', (process.env.PORT || 3000));
 
@@ -22,8 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false}));
 passport.use(new Strategy({
     clientID: '1032451400184652',
     clientSecret: '6640678d88db3c3b0d7815f22c4896f2',
-    //callbackURL: 'https://fitsesh.herokuapp.com/login/facebook/return'
-    callbackURL: 'http://localhost:3000/login/facebook/return'
+    callbackURL: cbURL;
   },
   function(accessToken, refreshToken, profile, cb) {
     // In this example, the user's Facebook profile is supplied as the user
@@ -57,7 +66,7 @@ app.use(passport.session());
 // Define routes.
 app.get('/',
   function(req, res) {
-	pg.connect(process.env.DATABASE_URL, function(err, client) {
+	pg.connect(connect, function(err, client) {
 	  if (err) throw err;
 	  console.log('Connected to postgres! Getting schemas...');
 
