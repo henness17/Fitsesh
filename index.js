@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false}));
 passport.use(new Strategy({
     clientID: '1032451400184652',
     clientSecret: '6640678d88db3c3b0d7815f22c4896f2',
-    callbackURL: cbURL;
+    callbackURL: cbURL
   },
   function(accessToken, refreshToken, profile, cb) {
     // In this example, the user's Facebook profile is supplied as the user
