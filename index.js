@@ -69,6 +69,7 @@ app.get('/',
 	pg.connect(connect, function(err, client) {
 	  if (err) throw err;
 	  console.log('Connected to postgres! Getting schemas...');
+	  res.render('home', {user: req.user});
 	});
   });
 
