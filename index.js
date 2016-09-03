@@ -70,6 +70,18 @@ app.get('/',
 	  if (err) throw err;
 	  console.log('Connected to postgres! Getting schemas...');
 	  res.render('home', {user: req.user});
+    client.query('SELECT * FROM users', function(err, result){
+        if(err){
+          return console.error('error fetching', err);  
+        }
+        res.render('home', {
+          users: result.rows,
+          user: req.user
+        });
+        console.log(result.rows);
+        done();
+      });
+
 	});
   });
 
