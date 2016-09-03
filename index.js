@@ -75,7 +75,7 @@ app.get('/',
           return console.error('error fetching', err);  
         }
         res.render('home', {
-          users: result.rows,
+          users: "Yeah",
           user: req.user
         });
         console.log(result.rows);
