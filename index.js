@@ -69,21 +69,16 @@ app.get('/',
 	pg.connect(connect, function(err, client) {
 	  if (err) throw err;
 	  console.log('Connected to postgres! Getting schemas...');
-	  res.render('home', {user: req.user});
     client.query('SELECT * FROM users', function(err, result){
         if(err){
           return console.error('error fetching', err);  
         }
-        res.render('home', {
-          users: "Yeah",
-          user: req.user
-        });
+            res.render('home', {user: req.user, users: "users"});
         console.log(result.rows);
-        done();
+        //done();
       });
-
 	});
-  });
+});
 
 app.get('/login',
   function(req, res){
