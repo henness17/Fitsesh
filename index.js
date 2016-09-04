@@ -74,7 +74,7 @@ app.get('/',
           return console.error('error fetching', err);  
         }
         console.log(result.rows[0].username);
-        res.render('home', {user: req.user, users: result.rows});
+        res.render('home', {user: req.user, users: result.rows[0].username});
       });
 	});
 });
