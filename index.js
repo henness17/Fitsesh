@@ -73,7 +73,7 @@ app.get('/',
         if(err){
           return console.error('error fetching', err);  
         }
-        console.log("!!! USERNAME IS: " + result.rows);
+        console.log("!!! USERNAME IS: " + result.rows[0]);
         res.render('home', {user: req.user, users: result.rows});
       });
 	});
