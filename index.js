@@ -69,15 +69,27 @@ app.get('/',
 	pg.connect(connect, function(err, client) {
 	  if (err) throw err;
 	  console.log('Connected to postgres! Getting schemas...');
-    var getUserById = client.query('SELECT * FROM users WHERE "username"="ryan"');
-    if(getUserById.length == null){
-      client.query('INSERT INTO users(username) VALUES("InputUser")', function(err, result){
-        if(err){
-          return console.error('error fetching', err);  
-        }
-        console.log("!!! USERNAME IS: " + result.rows);
-        res.render('home', {user: req.user, users: result.rows});
-      });
+    
+    // Check the user by fbId
+    if(req.user){
+    client.query('SELECT * FROM users WHERE fbid=$1', [req.user.id], function(err, result){
+      if(result.rows[0] == undefined){
+        console.log("User Id: " + req.user.id);
+        client.query('INSERT INTO users(fbid) VALUES($1)', [req.user.id], function(err, result){
+          if(err){
+            return console.error('error fetching', err);  
+          }
+          // INSERTED
+          res.render('home', {user: req.user, myObj: result.rows});
+        });
+      }else{
+        // EXISTED
+        res.render('home', {user: req.user, myObj: result.rows});
+      }
+    });      
+    }else{
+      // USER NOT LOGGED IN
+      res.render('home', {user: req.user, myObj: ""});
     }
 	});
 });
@@ -112,7 +124,7 @@ app.post('/addUser', function(req, res){
     if(err){
       return console.error('error fetching', err);
     }
-    client.query("INSERT INTO users(username) VALUES($1)", [req.body.username]);
+    client.query("UPDATE users SET username=$1 WHERE fbid=$2", [req.body.username, req.user.id]);
     done();
     res.redirect('/');
   });

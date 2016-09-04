@@ -10,12 +10,18 @@
 	<p>Hi, we don't know who you are!<br/> Please <a href="/login">log in</a>.</p>
 <% } else { %>
 	<p>Hello, <%= user.displayName %>.
+	<% if (myObj[0].username == undefined)
+	{%>
+		<form method="post" action="/addUser">
+  			Create a username:<br>
+  			<input type="text" name="username"><br>
+		</form>
+	<% }else{ %> 
+	<br>
+		Username: <%= myObj[0].username %>
+	<% } %>
+	
 	<br><a href="/logout/facebook">Log out</a></p>
-	<form method="post" action="/addUser">
-  		Add a user:<br>
-  		<input type="text" name="username"><br>
-	</form>
-	Users: <%= users[0].usernam %>
 <% } %>
 
 </div>
