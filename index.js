@@ -69,19 +69,7 @@ app.get('/',
 	pg.connect(connect, function(err, client) {
 	  if (err) throw err;
 	  console.log('Connected to postgres! Getting schemas...');
-      client.query('
-        IF EXISTS (SELECT * FROM users WHERE fbId="1")
-        BEGIN
-          UPDATE users
-          SET usernam="Updated"
-          WHERE fbId="1"
-        END
-        ELSE
-        BEGIN
-          INSERT INTO users (fbId, usernam)
-          VALUES ("23948", "Inserted")
-        END
-        ', function(err, result){
+      client.query(' IF EXISTS (SELECT * FROM users WHERE fbId="1") BEGIN UPDATE users SET usernam="Updated" WHERE fbId="1" END ELSE BEGIN INSERT INTO users (fbId, usernam) VALUES ("23948", "Inserted") END', function(err, result){
         if(err){
           return console.error('error fetching', err);  
         }
