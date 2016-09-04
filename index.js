@@ -17,7 +17,7 @@ var pg = require('pg'),
   bodyParser = require('body-parser'),
   path = require('path');
 
-pg.defaults.ssl = true;
+pg.defaults.ssl = !local;
 
 //var connect = "postgres://ryan:password@localhost/somedb"
 var connect = cnct;
@@ -69,7 +69,13 @@ app.get('/',
 	pg.connect(connect, function(err, client) {
 	  if (err) throw err;
 	  console.log('Connected to postgres! Getting schemas...');
-    res.render('home', {user: req.user, users: "users"});
+      client.query('SELECT * FROM users', function(err, result){
+        if(err){
+          return console.error('error fetching', err);  
+        }
+        console.log(result.rows[0].username);
+        res.render('home', {user: req.user, users: result.rows});
+      });
 	});
 });
 
