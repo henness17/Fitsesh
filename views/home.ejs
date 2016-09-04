@@ -19,6 +19,10 @@
 	<% }else{ %> 
 	<br>
 		Username: <%= myObj[0].username %>
+		<form method="post" action="/addUser">
+  			Edit username:<br>
+  		<input type="text" name="username"><br>
+		</form>
 	<% } %>
 	
 	<br><a href="/logout/facebook">Log out</a></p>
