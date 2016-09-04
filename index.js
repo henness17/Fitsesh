@@ -69,9 +69,9 @@ app.get('/',
 	pg.connect(connect, function(err, client) {
 	  if (err) throw err;
 	  console.log('Connected to postgres! Getting schemas...');
-    var getUserById = client.query('SELECT * FROM users WHERE fbId = "39248"');
+    var getUserById = client.query('SELECT * FROM users WHERE username = "ryan"');
     if(getUserById.length == null){
-      client.query('INSERT INTO users (fbId, usernam) VALUES ("29384", "InsertUser")', function(err, result){
+      client.query('INSERT INTO users(username) VALUES("InputUser")', function(err, result){
         if(err){
           return console.error('error fetching', err);  
         }
